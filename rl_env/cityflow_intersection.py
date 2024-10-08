@@ -20,6 +20,7 @@ class Intersection(object):
 
         # links and phase information of each intersection
         self.current_phase = 0
+        self.current_phase_time = 0
         self.roadlinks = []
         self.lanelinks_of_roadlink = []
         self.startlanes = []
@@ -28,12 +29,9 @@ class Intersection(object):
         self.phase_available_lanelinks = []
         self.phase_available_startlanes = []
 
-        # create yellow phases; in cityflow, yellow phases' id is 0
+        # create phases
         phases = intersection["trafficLight"]["lightphases"]
-        self.all_phases = [i for i in range(len(phases))]
-        self.yellow_phase_id = [0]
-        self.yellow_phase_time = 5
-        self.phases = [i for i in range(len(phases)) if not i in self.yellow_phase_id]  # mapping from model output to cityflow phase id
+        self.phases = [i for i in range(len(phases))]
         # parsing links and phases
         for roadlink in intersection["roadLinks"]:
             self.roadlinks.append((roadlink["startRoad"], roadlink["endRoad"]))
@@ -63,16 +61,14 @@ class Intersection(object):
             self.phase_available_startlanes.append(phase_available_startlanes)
 
         # init action, phase and time
-        self.action_before_yellow = None
+        self.action_before = None
         self.action_executed = None
         self._current_phase = None
-        self.current_phase_time = 0
 
         self.reset()
 
     def insert_road(self, road, out):
         """
-        insert_road
         It's used to append a road into self.road and add the corresponding direction with the added road.
 
         :param road: newly added road
@@ -85,7 +81,6 @@ class Intersection(object):
 
     def sort_roads(self):
         """
-        sort_roads
         Sort roads information by arranging an order.
 
         :return: None
@@ -127,45 +122,29 @@ class Intersection(object):
         :param interval: the non-acting time slice
         :return: None
         """
-        # if current phase is yellow, then continue to finish the yellow phase
-        # recall self._current_phase means true phase id (including yellows)
-        # self.current_phase means phase id in self.phases (excluding yellow)
-        if self._current_phase in self.yellow_phase_id:
-            if self.current_phase_time == self.yellow_phase_time:
-                self._change_phase(self.phases[self.action_before_yellow], interval, 'add')
-                self.current_phase = self.action_before_yellow
-                self.action_executed = self.action_before_yellow
-            else:
-                self.current_phase_time += interval
+        if action == self.current_phase:
+            self.current_phase_time += interval
         else:
-            if action == self.current_phase:
-                self.current_phase_time += interval
-            else:
-                if self.yellow_phase_time > 0:
-                    # yellow(red) phase is arranged behind each green light
-                    self._change_phase(self.yellow_phase_id[0], interval)
-                    self.action_before_yellow = action
-                else:
-                    self._change_phase(self.phases[action], interval)
-                    self.current_phase = action
-                    self.action_executed = action
+            self._change_phase(self.phases[action], interval)
+            self.current_phase = action
+            self.action_executed = action
 
     def reset(self):
         """
-        Reset information, including current_phase, action_before_yellow and action_executed, etc.
+        Reset information, including current_phase, action_before and action_executed, etc.
 
         :param: None
         :return: None
         """
         # record phase info
-        self.current_phase = 0  # phase id in self.phases (excluding yellow)
+        self.current_phase = 0  # phase id in self.phases
         if len(self.phases) == 0:
             self._current_phase = 0
         else:
-            self._current_phase = self.phases[0]  # true phase id (including yellow)
+            self._current_phase = self.phases[0]
         self.eng.set_tl_phase(self.id, self._current_phase)
         self.current_phase_time = 0
-        self.action_before_yellow = None
+        self.action_before = None
         self.action_executed = None
 
 

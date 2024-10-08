@@ -3,7 +3,7 @@ import os
 import cityflow
 import numpy as np
 import math
-from gym_cityflow.envs.cityflow_intersection import Intersection
+from rl_env.cityflow_intersection import Intersection
 
 
 class World(object):
@@ -19,10 +19,6 @@ class World(object):
         self.roadnet = self._get_roadnet(cityflow_config)
         self.RIGHT = True  # vehicles moves on the right side, currently always set to true due to CityFlow's mechanism
         self.interval = cityflow_config["interval"]
-
-        # get all non virtual intersections
-        self.intersections = [i for i in self.roadnet["intersections"] if not i["virtual"]]
-        self.intersection_ids = [i["id"] for i in self.intersections]
 
         # create non-virtual Intersections
         print("creating intersections...")
@@ -78,8 +74,8 @@ class World(object):
             "history_vehicles": self.get_history_vehicles,
             "phase": self.get_cur_phase,
             "throughput": self.get_cur_throughput,
-            "average_travel_time": self.get_average_travel_time
-            # "action_executed": self.get_executed_action
+            "average_travel_time": self.get_average_travel_time,
+            "action_executed": self.get_executed_action
         }
         self.fns = []
         self.info = {}
@@ -87,9 +83,6 @@ class World(object):
         self.vehicle_trajectory = {}  # key: vehicle_id, value: [[lane_id_1, enter_time, time_spent_on_lane_1], ... , [lane_id_n, enter_time, time_spent_on_lane_n]]
         self.history_vehicles = set()
         self.real_delay = {}
-
-        # # get in_lines and out_lanes
-        # self.list_entering_lanes, self.list_exiting_lanes = self.get_in_out_lanes()
 
         # record lanes' vehicles to calculate arrive_leave_time
         self.dic_lane_vehicle_previous_step = {key: None for key in self.all_lanes}
