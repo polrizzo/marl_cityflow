@@ -77,7 +77,7 @@ class Intersection(object):
         """
         self.roads.append(road)
         self.outs.append(out)
-        self.directions.append(self._get_direction(road, out))
+        self.directions.append(self.get_direction(road, out))
 
     def sort_roads(self):
         """
@@ -148,7 +148,7 @@ class Intersection(object):
         self.action_executed = None
 
 
-    def _get_direction(self, road, out=True):
+    def get_direction(self, road, out=True):
         if out:
             x = road["points"][1]["x"] - road["points"][0]["x"]
             y = road["points"][1]["y"] - road["points"][0]["y"]
