@@ -4,7 +4,6 @@ class BaseGenerator(object):
     """
     def generate(self):
         """
-        generate
         Generate state or reward based on current simulation state. 
         Different types of generators have different methods to implement it.
         

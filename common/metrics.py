@@ -28,7 +28,6 @@ class Metrics(object):
 
     def update(self, rewards=None):
         """
-        update
         Recalculate metrics.
 
         :param rewards: reward name
@@ -46,7 +45,6 @@ class Metrics(object):
 
     def clear(self):
         """
-        clear
         Reset metrics.
 
         :param: None
@@ -58,7 +56,6 @@ class Metrics(object):
 
     def delay(self):
         """
-        delay
         Calculate vehicle delay.
 
         :param: None
@@ -87,7 +84,6 @@ class Metrics(object):
 
     def queue(self):
         """
-        queue
         Calculate total queue length of all lanes.
 
         :param: None
@@ -102,7 +98,6 @@ class Metrics(object):
 
     def lane_queue(self):
         """
-        lane_queue
         Calculate average queue length of lanes.
 
         :param: None
@@ -117,7 +112,6 @@ class Metrics(object):
 
     def rewards(self):
         """
-        rewards
         Calculate total rewards of all lanes.
 
         :param: None
@@ -128,7 +122,6 @@ class Metrics(object):
     
     def lane_rewards(self):
         """
-        lane_rewards
         Calculate average reward of lanes.
 
         :param: None
@@ -139,7 +132,6 @@ class Metrics(object):
     
     def throughput(self):
         """
-        throughput
         Calculate throughput.
 
         :param: None
@@ -149,7 +141,6 @@ class Metrics(object):
     
     def real_average_travel_time(self):
         """
-        real_average_travel_time
         Calculate average travel time.
 
         :param: None

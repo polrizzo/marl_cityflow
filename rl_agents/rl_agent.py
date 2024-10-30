@@ -4,7 +4,7 @@ import numpy as np
 
 from . import BaseAgent
 from common.registry import Registry
-from generator import LaneVehicleGenerator, IntersectionPhaseGenerator, IntersectionVehicleGenerator
+from generator import LaneVehicleGenerator, IntersectionPhaseGenerator
 
 
 @Registry.register_model('rl')
@@ -14,6 +14,7 @@ class RLAgent(BaseAgent):
     """
     def __init__(self, world, intersection_ids):
         super().__init__(world)
+        print("building RLAgent {}...".format(intersection_ids))
         self.id = intersection_ids
         self.inter_obj = self.world.id2intersection[self.id]
         self.action_space = gym.spaces.Discrete(len(self.inter_obj.phases))
@@ -32,7 +33,6 @@ class RLAgent(BaseAgent):
                                                      negative=False)
     def get_ob(self):
         """
-        get_ob
         Get observation from environment.
 
         :param: None
@@ -42,7 +42,6 @@ class RLAgent(BaseAgent):
 
     def get_phase(self):
         """
-        get_phase
         Get current phase of intersection(s) from environment.
 
         :param: None
@@ -52,7 +51,6 @@ class RLAgent(BaseAgent):
 
     def get_reward(self):
         """
-        get_reward
         Get reward from environment.
 
         :param: None
@@ -64,7 +62,6 @@ class RLAgent(BaseAgent):
 
     def get_action(self):
         """
-        get_action
         Generate action.
 
         :param: None
