@@ -1,6 +1,5 @@
 data/
 .idea/
 .venv/
-config
 
 gen_new_scenarios.sh

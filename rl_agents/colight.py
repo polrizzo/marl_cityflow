@@ -4,6 +4,11 @@ import random
 from collections import OrderedDict, deque
 import gymnasium as gym
 
+from . import RLAgent
+from generator.lane_vehicle import LaneVehicleGenerator
+from generator.intersection_phase import IntersectionPhaseGenerator
+from common.registry import Registry
+
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -14,10 +19,6 @@ from torch_geometric.data import Data, Batch
 from torch_geometric.utils import add_self_loops
 import torch_scatter
 
-from common.registry import Registry
-from . import RLAgent
-from generator.lane_vehicle import LaneVehicleGenerator
-from generator.intersection_phase import IntersectionPhaseGenerator
 
 
 @Registry.register_model('colight')

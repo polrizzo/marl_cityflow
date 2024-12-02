@@ -2,13 +2,13 @@ import gymnasium as gym
 import numpy as np
 
 
-class TSCEnv(gym.Env):
+class MarlCityFlow(gym.Env):
     """
     Environment for Traffic Signal Control task.
     Parameters
     ----------
     world: World object
-    agents: list of agents, corresponding to each intersection in world.intersections
+    agents: list of agents, corresponding to each intersection
     metric: Metric object, used to calculate evaluation metric
     """
 
